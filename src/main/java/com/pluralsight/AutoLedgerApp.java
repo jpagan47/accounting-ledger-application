@@ -1,6 +1,10 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.SocketHandler;
@@ -12,13 +16,15 @@ public class AutoLedgerApp {
     //Declaring my Scanner
     public static Scanner myScanner = new Scanner(System.in);
     //Declaring my ArrayList
-    public static ArrayList< Transaction> transactionsList = new ArrayList< Transaction>();
+    public static ArrayList<Transaction> transactionsList = new ArrayList<Transaction>();
     //Declaring my File and Buffer readers
     public static FileReader fileReader;
     public static BufferedReader bufferedReader;
     //Declaring my File and Buffered writer
     public static FileWriter fileWriter;
     public static BufferedWriter bufferedWriter;
+    //Declaring my Date Time Formatter
+    public static DateTimeFormatter dateTimeFormatter;
     //Declaring my Prompts
     public static String mainMenuPrompt = """
             🏁............🏎💨..
@@ -114,27 +120,35 @@ public class AutoLedgerApp {
     private static void addDeposit() {
         //todo prompt user for the deposit information and save it to the csv file
         //todo add my formatters
-        System.out.println("Please Enter the Date of the Deposit:");
+        //Date Formatting
+        System.out.println("Please Enter the Date of the Deposit (MM/dd/yyyy) :");
         String date = myScanner.nextLine();
-        System.out.println("Please Enter the Time of the Deposit:");
+        dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate dateFormatter = LocalDate.parse(date, dateTimeFormatter);
+        //Time Formatting
+        System.out.println("Please Enter the Time of the Deposit (HH:mm:ss) :");
         String time = myScanner.nextLine();
+        dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime timeFormatter = LocalTime.parse(time, dateTimeFormatter);
+
         System.out.println("Please Enter a short Description of the Deposit:");
         String description = myScanner.nextLine();
+
         System.out.println("Please Enter the Vendor Name:");
-        String vendor =myScanner.nextLine();
+        String vendor = myScanner.nextLine();
+
         System.out.println("Please Enter the Amount of the Deposit:");
         double amount = Double.parseDouble(myScanner.nextLine());
+
         try {
-            fileWriter =new FileWriter(filePath ,true);
+            fileWriter = new FileWriter(filePath, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.newLine();
-            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount );
+            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
             bufferedWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
 
     }
