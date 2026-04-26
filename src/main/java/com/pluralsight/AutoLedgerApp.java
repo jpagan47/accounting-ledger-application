@@ -65,7 +65,6 @@ public class AutoLedgerApp {
         try {
             fileReader = new FileReader(fileName);
             bufferedReader = new BufferedReader(fileReader);
-            //todo nest everything in one try block
             try {
                 String line = bufferedReader.readLine();
                 line = bufferedReader.readLine();
@@ -96,11 +95,12 @@ public class AutoLedgerApp {
         boolean running = true;
         do {
             System.out.println(mainMenuPrompt);
-            //Todo Add a .ignorecase somehow into the usersInput
             String userInput = myScanner.nextLine();
+            userInput = userInput.toUpperCase();
             switch (userInput) {
                 case "D":
                     addDeposit();
+                    System.out.println("Success!");
                     break;
                 case "P":
                     makePayment();
@@ -159,8 +159,8 @@ public class AutoLedgerApp {
 
     private static void ledgerMenu() {
         System.out.println(ledgerMenuPrompt);
-        //todo Add a .ignorecase somehow into the usersInput
         String userInput = myScanner.nextLine();
+        userInput = userInput.toUpperCase();
         switch (userInput) {
             case "A"://All - Display all entries
                 displayAllTransactions();
@@ -198,7 +198,7 @@ public class AutoLedgerApp {
         //todo- A new screen that allows the user to run pre-defined reports or to run a custom search
         System.out.println(customReportPrompt);
         String userInput = myScanner.nextLine();
-        //todo Add a .ignorecase somehow into the usersInput
+        userInput = userInput.toUpperCase();
         switch (userInput) {
             case "1":
                 displayThisMonthsTrans();
