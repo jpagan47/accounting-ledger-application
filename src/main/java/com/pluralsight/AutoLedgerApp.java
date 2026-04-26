@@ -1,12 +1,24 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AutoLedgerApp {
     //Class Level Field Variables
     //Path for the file I am reading (transactions.csv)
     public static String filePath = "src/main/resources/transactions.csv";
+    //Declaring my Scanner
     public static Scanner myScanner = new Scanner(System.in);
+    //Declaring my ArrayList
+    public static ArrayList< Transaction> transactionsList = new ArrayList< Transaction>();
+    //Declaring my File and Buffer readers
+    public static FileReader fileReader;
+    public static BufferedReader bufferedReader;
+    //Declaring my Prompts
     public static String mainMenuPrompt = """
             🏁............🏎💨..
             ===== Main Menu =====
@@ -14,6 +26,7 @@ public class AutoLedgerApp {
             (P) Make Payment (Debit)
             (L) Ledger
             (X) Exit
+            🏎️. ݁₊ ⊹ . ݁˖ .
             """;
     public static String ledgerMenuPrompt = """
             === Ledger Menu ===
@@ -23,11 +36,52 @@ public class AutoLedgerApp {
             (R) Custom Report Search
             (H) Back To Home Page
             """;
+    public static String customReportPrompt = """
+            === Custom Report ===
+            (1) Month to Date
+            (2) Previous Month
+            (3) Year to Date
+            (4) Previous Year
+            (5) Search By Vendor
+            (H) Back to Home Page
+            """;
 
     //All my code that needs to run
     public static void main(String[] args) {
+        loadTransactions(filePath);
         mainMenu();
         System.out.println("End of Application");
+
+    }
+
+    public static void loadTransactions(String fileName) {
+        try {
+            fileReader = new FileReader(fileName);
+            bufferedReader = new BufferedReader(fileReader);
+            //todo nest everything in one try block
+            try {
+                String line = bufferedReader.readLine();
+                line = bufferedReader.readLine();
+                while (line != null) {
+                    String[] parts = line.split("\\|");
+                    String date = parts[0];
+                    String time = parts[1];
+                    String description = parts[2];
+                    String vendor = parts[3];
+                    double amount = Double.parseDouble(parts[4]);
+                    Transaction transaction = new Transaction(date, time, description, vendor, amount);
+                    transactionsList.add(transaction);
+                    line = bufferedReader.readLine();
+                }
+                bufferedReader.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("The file with the path " + fileName + " was not found!");
+            throw new RuntimeException(e);
+        }
+
 
     }
 
@@ -35,7 +89,7 @@ public class AutoLedgerApp {
         boolean running = true;
         do {
             System.out.println(mainMenuPrompt);
-            //todo Add a .ignorecase somehow into the usersInput
+            //Todo Add a .ignorecase somehow into the usersInput
             String userInput = myScanner.nextLine();
             switch (userInput) {
                 case "D":
@@ -84,9 +138,9 @@ public class AutoLedgerApp {
             case "H":
 //              backToHomePage();
                 break;
+            default:
+                System.err.println("You did not enter a valid input");
         }
-
-
     }
 
     private static void displayAllTransactions() {
@@ -94,7 +148,7 @@ public class AutoLedgerApp {
     }
 
     private static void displayAllDeposits() {
-       //todo - Display only the entries that are deposits into the account
+        //todo - Display only the entries that are deposits into the account
     }
 
     private static void displayAllPayments() {
@@ -103,19 +157,10 @@ public class AutoLedgerApp {
 
     private static void customReportSearch() {
         //todo- A new screen that allows the user to run pre-defined reports or to run a custom search
-        String customReportPrompt = """
-                === Custom Report ===
-                (1) Month to Date
-                (2) Previous Month
-                (3) Year to Date
-                (4) Previous Year
-                (5) Search By Vendor
-                (H) Back to Home Page
-                """;
         System.out.println(customReportPrompt);
-        String userInput  = myScanner.nextLine();
+        String userInput = myScanner.nextLine();
         //todo Add a .ignorecase somehow into the usersInput
-        switch (userInput){
+        switch (userInput) {
             case "1":
                 displayThisMonthsTrans();
                 break;
@@ -133,7 +178,8 @@ public class AutoLedgerApp {
                 break;
             case "0":
                 break;
-
+            default:
+                System.err.println("You did not enter a valid input");
         }
     }
 
