@@ -26,8 +26,8 @@ public class AutoLedgerApp {
     public static BufferedWriter bufferedWriter;
     //Declaring my Date Time Formatter
     public static DateTimeFormatter dateTimeFormatter;
-    public static LocalDate localDate ;
-    public static LocalTime localTime ;
+    public static LocalDate localDate;
+    public static LocalTime localTime;
     //Declaring my Prompts
     public static String mainMenuPrompt = """
             🏁............🏎💨..
@@ -53,7 +53,7 @@ public class AutoLedgerApp {
             (3) Year to Date
             (4) Previous Year
             (5) Search By Vendor
-            (H) Back to Home Page
+            (0) Back to Ledger
             """;
 
     //All my code that needs to run
@@ -200,36 +200,49 @@ public class AutoLedgerApp {
     }
 
     private static void ledgerMenu() {
-        System.out.println(ledgerMenuPrompt);
-        String userInput = myScanner.nextLine();
-        userInput = userInput.toUpperCase();
-        switch (userInput) {
-            case "A"://All - Display all entries
-                displayAllTransactions();
-                break;
-            case "D"://Deposits - Display only the entries that are deposits into the account
-                displayAllDeposits();
-                break;
-            case "P"://Payments - Display only the negative entries (or payments
-                displayAllPayments();
-                break;
-            case "R"://R) Reports - A new screen that allows the user to run pre-defined reports or to run a custom search
-                customReportSearch();
-                break;
-            case "H":
+        boolean running = true;
+        do {
+            System.out.println(ledgerMenuPrompt);
+            String userInput = myScanner.nextLine();
+            userInput = userInput.toUpperCase();
+            switch (userInput) {
+                case "A"://All - Display all entries
+                    displayAllTransactions();
+                    break;
+                case "D"://Deposits - Display only the entries that are deposits into the account
+                    displayAllDeposits();
+                    break;
+                case "P"://Payments - Display only the negative entries (or payments
+                    displayAllPayments();
+                    break;
+                case "R"://R) Reports - A new screen that allows the user to run pre-defined reports or to run a custom search
+                    customReportSearch();
+                    break;
+                case "H":
 //              backToHomePage();
-                break;
-            default:
-                System.err.println("You did not enter a valid input");
-        }
+                    running = false;
+                    break;
+                default:
+                    System.err.println("You did not enter a valid input");
+            }
+        } while (running);
     }
+
 
     private static void displayAllTransactions() {
         //todo - Display all entries SORTED
-//        transactionsList.sort(Comparator.comparing(Transaction::getDate));
+        //transactionsList.sort(Comparator.comparing(Transaction::getDate));
+        // Sort by date, then time
+        transactionsList.sort(
+                Comparator.comparing((Transaction t) ->
+                        LocalDate.parse(t.getDate(), DateTimeFormatter.ofPattern("MM-dd-yyyy"))
+                ).thenComparing(t ->
+                        LocalTime.parse(t.getTime(), DateTimeFormatter.ofPattern("HH:mm:ss"))
+                )
+        );
         printOutHeader();
 //        transactionsList.sort(Comparator.comparing(transaction -> LocalDate.parse(transaction.getDate(),DateTimeFormatter.ofPattern("MM/dd/yyyy"))).thenComparing(t -> LocalTime.parse(t.getTime(),DateTimeFormatter.ofPattern("HH:mm:ss"))));
-        for (Transaction t: transactionsList) {
+        for (Transaction t : transactionsList) {
             System.out.printf("%-10s %-10s %-28s %-22s %.2f %n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
         }
     }
@@ -239,17 +252,18 @@ public class AutoLedgerApp {
         printOutHeader();
         for (Transaction t : transactionsList) {
             if (t.getAmount() > 0) {
-                System.out.printf("%-10s %-10s %-28s %-22s $%.2f %n", t.getDate() , t.getTime() , t.getDescription() , t.getVendor() , t.getAmount());
+                System.out.printf("%-10s %-10s %-28s %-22s $%.2f %n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
 
             }
         }
     }
+
     private static void displayAllPayments() {
         //For only Payments
         printOutHeader();
         for (Transaction t : transactionsList) {
             if (t.getAmount() < 0) {
-                System.out.printf("%-10s %-10s %-28s %-22s $%.2f %n", t.getDate() , t.getTime() , t.getDescription() , t.getVendor() , t.getAmount());
+                System.out.printf("%-10s %-10s %-28s %-22s $%.2f %n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
             }
         }
     }
@@ -284,6 +298,20 @@ public class AutoLedgerApp {
     }
 
     private static void displayThisMonthsTrans() {
+        LocalDate today = LocalDate.now();
+        printOutHeader();
+        boolean found = false;
+        for(Transaction t : transactionsList){
+            LocalDate transDate = LocalDate.parse(t.getDate(),DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+            if (transDate.getMonth() ==  today.getMonth()&& transDate.getYear() == today.getYear()){
+                System.out.printf("%-10s %-10s %-28s %-22s %.2f %n", t.getDate(), t.getTime(), t.getDescription(),t.getVendor(), t.getAmount());
+
+            }
+            found = true;
+        }
+        if(found == false){
+             System.out.println("There is no Transactions this month");
+        }
     }
 
     private static void displayLastMonthTrans() {
@@ -297,8 +325,9 @@ public class AutoLedgerApp {
 
     private static void searchByVendor() {
     }
-    private static void printOutHeader(){
-        System.out.printf("%-10s %-10s %-28s %-22s %s %n","Date" , "Time" , " Description" , "Vendor", "Amount");
+
+    private static void printOutHeader() {
+        System.out.printf("%-10s %-10s %-28s %-22s %s %n", "Date", "Time", " Description", "Vendor", "Amount");
         System.out.println("=================================================================================");
     }
 
