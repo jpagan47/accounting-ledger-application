@@ -2,12 +2,11 @@ package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
-import java.util.logging.SocketHandler;
 
 public class AutoLedgerApp {
     //Class Level Field Variables
@@ -17,6 +16,8 @@ public class AutoLedgerApp {
     public static Scanner myScanner = new Scanner(System.in);
     //Declaring my ArrayList
     public static ArrayList<Transaction> transactionsList = new ArrayList<Transaction>();
+    //Declaring my ArrayList
+    public static HashMap<String, Transaction> transMap = new HashMap<String, Transaction>();
     //Declaring my File and Buffer readers
     public static FileReader fileReader;
     public static BufferedReader bufferedReader;
@@ -119,8 +120,6 @@ public class AutoLedgerApp {
     }
 
     private static void addDeposit() {
-        //todo prompt user for the deposit information and save it to the csv file
-        //todo add my formatters
         //Date Formatting
         System.out.println("Please Enter the Date of the Deposit (MM/dd/yyyy) :");
         String date = myScanner.nextLine();
@@ -139,7 +138,7 @@ public class AutoLedgerApp {
         String vendor = myScanner.nextLine();
         double amount = 0;
         do {
-            System.out.println("Please Enter the Amount of the Payment:");
+            System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
             if (amount <= 0) {
                 System.err.println("The payment must be a positive value! Try again");
@@ -160,8 +159,6 @@ public class AutoLedgerApp {
     }
 
     private static void makePayment() {
-        //todo prompt user for the debit information and save it to the csv file
-        //todo add my formatters
         //Date Formatting
         System.out.println("Please Enter the Date of the Payment (MM/dd/yyyy) :");
         String date = myScanner.nextLine();
@@ -224,15 +221,30 @@ public class AutoLedgerApp {
     }
 
     private static void displayAllTransactions() {
-        //todo - Display all entries
+        //todo - Display all entries SORTED
+
     }
 
     private static void displayAllDeposits() {
         //todo - Display only the entries that are deposits into the account
+        //For only Deposits
+        printOutHeader();
+        for (Transaction t : transactionsList) {
+            if (t.getAmount() > 0) {
+                System.out.printf("%-10s %-10s %-28s %-22s $%.2f %n", t.getDate() , t.getTime() , t.getDescription() , t.getVendor() , t.getAmount());
+
+            }
+        }
     }
 
     private static void displayAllPayments() {
-        //todo  - Display only the negative entries (or payments)
+        //For only Payments
+        printOutHeader();
+        for (Transaction t : transactionsList) {
+            if (t.getAmount() < 0) {
+                System.out.printf("%-10s %-10s %-28s %-22s $%.2f %n", t.getDate() , t.getTime() , t.getDescription() , t.getVendor() , t.getAmount());
+            }
+        }
     }
 
     private static void customReportSearch() {
@@ -276,6 +288,10 @@ public class AutoLedgerApp {
     }
 
     private static void searchByVendor() {
+    }
+    private static void printOutHeader(){
+        System.out.printf("%-10s %-10s %-28s %-22s %s %n","Date" , "Time" , " Description" , "Vendor", "Amount");
+        System.out.println("=================================================================================");
     }
 
 
