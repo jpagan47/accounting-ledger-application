@@ -73,8 +73,8 @@ public class AutoLedgerApp {
                 line = bufferedReader.readLine();
                 while (line != null) {
                     String[] parts = line.split("\\|");
-                    String date = parts[0];
-                    String time = parts[1];
+                    LocalDate date = LocalDate.parse(parts[0]);
+                    LocalTime time = LocalTime.parse(parts[1]);
                     String description = parts[2];
                     String vendor = parts[3];
                     double amount = Double.parseDouble(parts[4]);
@@ -124,14 +124,15 @@ public class AutoLedgerApp {
     private static void addDeposit() {
         //Date Formatting
         System.out.println("Please Enter the Date of the Deposit (MM-dd-yyyy) :");
-        String date = myScanner.nextLine();
+        String userInput = myScanner.nextLine();
+
         dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-        localDate = LocalDate.parse(date, dateTimeFormatter);
+        localDate = LocalDate.parse(userInput, dateTimeFormatter);
         //Time Formatting
         System.out.println("Please Enter the Time of the Deposit (HH:mm:ss) :");
-        String time = myScanner.nextLine();
-        dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        localTime = LocalTime.parse(time, dateTimeFormatter);
+        userInput = myScanner.nextLine();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        localTime = LocalTime.parse(userInput, timeFormatter);
 
         System.out.println("Please Enter a short Description of the Deposit:");
         String description = myScanner.nextLine();
@@ -151,7 +152,7 @@ public class AutoLedgerApp {
             fileWriter = new FileWriter(filePath, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.newLine();
-            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
+            bufferedWriter.write(localDate + "|" + localTime.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount);
             bufferedWriter.close();
             loadTransactions(filePath);
         } catch (IOException e) {
@@ -233,13 +234,8 @@ public class AutoLedgerApp {
         //todo - Display all entries SORTED
         //transactionsList.sort(Comparator.comparing(Transaction::getDate));
         // Sort by date, then time
-        transactionsList.sort(
-                Comparator.comparing((Transaction t) ->
-                        LocalDate.parse(t.getDate(), DateTimeFormatter.ofPattern("MM-dd-yyyy"))
-                ).thenComparing(t ->
-                        LocalTime.parse(t.getTime(), DateTimeFormatter.ofPattern("HH:mm:ss"))
-                )
-        );
+
+
         printOutHeader();
 //        transactionsList.sort(Comparator.comparing(transaction -> LocalDate.parse(transaction.getDate(),DateTimeFormatter.ofPattern("MM/dd/yyyy"))).thenComparing(t -> LocalTime.parse(t.getTime(),DateTimeFormatter.ofPattern("HH:mm:ss"))));
         for (Transaction t : transactionsList) {
@@ -302,7 +298,7 @@ public class AutoLedgerApp {
         printOutHeader();
         boolean found = false;
         for (Transaction t : transactionsList) {
-            LocalDate transDate = LocalDate.parse(t.getDate(), DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+            LocalDate transDate = t.getDate();
             if (transDate.getMonth() == today.getMonth() && transDate.getYear() == today.getYear()) {
                 System.out.printf("%-10s %-10s %-28s %-22s %.2f %n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
 
@@ -321,7 +317,7 @@ public class AutoLedgerApp {
         boolean found = false;
 
         for (Transaction t : transactionsList) {
-            LocalDate transDate = LocalDate.parse(t.getDate(), DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+            LocalDate transDate = t.getDate();
 
             if (transDate.getMonth() == lastMonthDate.getMonth() && transDate.getYear() == lastMonthDate.getYear()) {
                 System.out.printf("%-10s %-10s %-28s %-22s %.2f %n",
@@ -332,20 +328,74 @@ public class AutoLedgerApp {
                         t.getAmount());
 
                 found = true; // ✅ mark that we found something
-                System.out.println("\n");
-                System.out.println("====== End of Transactions ======");
-                System.out.println("\n");
             }
         }
+        System.out.println("\n");
+        System.out.println("====== End of Transactions ======");
+        System.out.println("\n");
         if (!found) {
             System.out.println("There is no Transactions this month");
         }
     }
 
     private static void displayCurrentYearTrans() {
+        LocalDate today = LocalDate.now();
+        LocalDate january = today.withMonth(1).withDayOfMonth(1);
+        printOutHeader();
+        boolean found = false;
+        for (Transaction t : transactionsList) {
+            LocalDate transDate = t.getDate();
+            /* Checking if trans date is = january of this year and checking if its after january
+             * then checking at the same time if the trans date is on today or before. All nested in an if statement.
+             * If params are meet anything in between Jan 1st and today will print*/
+            if ((transDate.isEqual(january) || transDate.isAfter(january)) && (transDate.isBefore(today)) || transDate.isEqual(today)) {
+                System.out.printf("%-10s %-10s %-28s %-22s %.2f %n",
+                        t.getDate(),
+                        t.getTime(),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+
+                found = true; // ✅ mark that we found something
+            }
+        }
+        System.out.println("\n");
+        System.out.println("====== End of Transactions ======");
+        System.out.println("\n");
+        if (!found) {
+            System.out.println("There is no Transactions this year");
+        }
     }
 
     private static void displayLastYearTrans() {
+        LocalDate today = LocalDate.now();
+        int lastYear = today.getYear() - 1;
+
+        LocalDate january = today.withMonth(1).withDayOfMonth(1);
+        printOutHeader();
+        boolean found = false;
+        for (Transaction t : transactionsList) {
+            LocalDate transactionDate = t.getDate();
+
+            if (transactionDate.getYear() == lastYear) {
+                LocalDate transDate = t.getDate();
+                LocalTime transTime = t.getTime();
+                System.out.printf("%-10s %-10s %-28s %-22s %.2f %n",
+                        t.getDate(),
+                        t.getTime(),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+                found = true; // ✅ mark that we found something
+
+            }
+        }
+        System.out.println("\n");
+        System.out.println("====== End of Transactions ======");
+        System.out.println("\n");
+        if (!found) {
+            System.out.println("There is no Transactions this year");
+        }
     }
 
     private static void searchByVendor() {

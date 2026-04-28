@@ -1,29 +1,32 @@
-04-01-2026|08:15:23|Fuel Fill-Up|Shell Gas|-65.32
-04-01-2026|12:45:10|Car Wash|QuickWash|-15.00
-04-02-2026|09:10:45|Paycheck Deposit|Employer|2500.00
-04-02-2026|14:22:30|Oil Change|Jiffy Lube|-89.99
-04-03-2026|18:05:12|Parking Fee|City Parking|-12.00
-04-04-2026|11:30:00|Tire Rotation|Firestone|-45.00
-04-05-2026|16:40:55|Fuel Fill-Up|Exxon|-70.21
-04-06-2026|10:15:44|Insurance Payment|Geico|-180.50
-04-07-2026|13:50:20|Car Accessories|AutoZone|-120.75
-04-08-2026|07:55:33|Fuel Fill-Up|BP Gas|-68.90
-04-09-2026|19:22:11|Toll Payment|EZPass|-25.00
-04-10-2026|09:00:00|Side Job Income|Client Payment|600.00
-04-11-2026|15:18:27|Brake Pads Replacement|Midas|-320.40
-04-12-2026|12:00:45|Fuel Fill-Up|Shell Gas|-66.10
-04-13-2026|17:35:59|Car Detail|Detail Shop|-150.00
-04-14-2026|08:20:14|Fuel Fill-Up|Wawa Gas|-72.55
-04-15-2026|14:10:10|Registration Renewal|DMV|-110.00
-04-16-2026|11:45:33|Fuel Fill-Up|Exxon|-67.89
-04-17-2026|18:25:00|Uber Driving Income|Uber|320.00
-04-18-2026|09:30:21|Battery Replacement|AutoZone|-210.00
-04-19-2026|13:05:10|Fuel Fill-Up|Shell Gas|-69.45
-04-20-2026|08:42:33|Car Wash|QuickWash|-18.00
-04-21-2026|16:15:00|Freelance Payment|Client|850.00
-04-22-2026|11:28:44|Windshield Repair|Safelite|-140.75
-04-23-2026|19:55:12|Parking Ticket|City Parking|-35.00
-04-26-2026|17:24:02|A new set of tires|Midas|200.01
-04-26-2026|17:24:03|New set of Headlights|Facebook Market Place|302.34
-04-26-2026|17:29:03|A new engine for the shop|Jimmy's Engine Shop|2023.2
-03-26-2026|12:12:12|test|test|123.56
+date|time|description|vendor|amount
+2025-01-05|09:15:00|Opening balance deposit|Bank|1000.00
+2025-01-12|13:42:10|Office supplies|Staples|-48.22
+2025-02-03|08:05:33|Consulting invoice paid|Acme Client|1250.00
+2025-02-10|18:20:00|Internet bill|Comcast|-89.99
+2025-03-01|12:00:00|Coffee with client|Starbucks|-14.75
+2025-03-15|16:45:21|Software subscription|Adobe|-29.99
+2025-04-22|10:30:00|Website project deposit|Blue Ocean LLC|800.00
+2025-05-02|11:11:11|Printer paper|Staples|-19.47
+2025-06-14|15:05:09|Travel reimbursement|Acme Client|215.00
+2025-07-19|19:22:45|Team lunch|Chipotle|-63.80
+2025-08-08|07:59:59|Equipment sale|Facebook Marketplace|150.00
+2025-09-30|17:10:00|Electric bill|City Utilities|-122.18
+2025-10-21|14:25:33|Quarterly bonus|Bank|500.00
+2025-11-11|09:09:09|Domain renewal|GoDaddy|-21.17
+2025-12-31|23:50:00|Year-end adjustment|Bank|300.00
+2026-01-03|10:10:10|January rent|Landlord|-950.00
+2026-01-15|09:30:00|Invoice 2001 paid|Acme Client|1750.00
+2026-02-07|08:00:00|Laptop repair|Geek Squad|-140.00
+2026-02-28|17:45:00|Book sale income|Amazon|84.32
+2026-03-02|12:12:12|March rent|Landlord|-950.00
+2026-03-10|16:20:00|Consulting payment|Northwind|2200.00
+2026-03-18|07:40:55|Office chair|Amazon|-189.99
+2026-03-29|18:05:05|Cloud hosting|DigitalOcean|-56.14
+2026-04-01|09:00:00|April rent|Landlord|-950.00
+2026-04-05|13:15:30|Invoice 2002 paid|Northwind|1450.00
+2026-04-09|08:48:00|Coffee beans for office|Costco|-37.45
+2026-04-12|17:30:45|Tax refund|IRS|420.17
+2026-04-18|11:22:33|Client lunch|Panera|-28.60
+2026-04-22|15:55:10|Monitor stand|Amazon|-44.95
+2026-04-24|10:05:00|Emergency consulting payment|Acme Client|675.00
+2026-04-28|13:24:00|descriptionTest|VendorTest|100.25
