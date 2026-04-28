@@ -165,14 +165,15 @@ public class AutoLedgerApp {
     private static void makePayment() {
         //Date Formatting
         System.out.println("Please Enter the Date of the Payment (MM-dd-yyyy) :");
-        String date = myScanner.nextLine();
+        String userInput = myScanner.nextLine();
+
         dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-        localDate = LocalDate.parse(date, dateTimeFormatter);
+        localDate = LocalDate.parse(userInput, dateTimeFormatter);
         //Time Formatting
         System.out.println("Please Enter the Time of the Payment (HH:mm:ss) :");
-        String time = myScanner.nextLine();
-        dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        localTime = LocalTime.parse(time, dateTimeFormatter);
+        userInput = myScanner.nextLine();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        localTime = LocalTime.parse(userInput, timeFormatter);
 
         System.out.println("Please Enter a short Description of the Payment:");
         String description = myScanner.nextLine();
@@ -181,24 +182,27 @@ public class AutoLedgerApp {
         String vendor = myScanner.nextLine();
         double amount = 0;
         do {
-            System.out.println("Please Enter the Amount of the Payment:");
+            System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
             if (amount >= 0) {
                 System.err.println("The payment must be a negative value! Try again");
             }
         } while (amount >= 0);
+
         try {
             fileWriter = new FileWriter(filePath, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.newLine();
-            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
+            bufferedWriter.write(localDate + "|" + localTime.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount);
             bufferedWriter.close();
             loadTransactions(filePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+
     }
+
 
     private static void ledgerMenu() {
         boolean running = true;
