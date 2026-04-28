@@ -16,8 +16,6 @@ public class AutoLedgerApp {
     public static Scanner myScanner = new Scanner(System.in);
     //Declaring my ArrayList
     public static ArrayList<Transaction> transactionsList = new ArrayList<>();
-    //Declaring my File and Buffer readers
-    //Declaring my File and Buffered writer
     public static FileWriter fileWriter;
     public static BufferedWriter bufferedWriter;
     //Declaring my Date Time Formatter
@@ -37,7 +35,7 @@ public class AutoLedgerApp {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             try {
-                String line = bufferedReader.readLine();
+                String line ;
                 line = bufferedReader.readLine();
                 while (line != null) {
                     String[] parts = line.split("\\|");
@@ -114,7 +112,7 @@ public class AutoLedgerApp {
 
         System.out.println("Please Enter the Vendor Name:");
         String vendor = myScanner.nextLine();
-        double amount = 0;
+        double amount ;
         do {
             System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
@@ -152,7 +150,7 @@ public class AutoLedgerApp {
 
         System.out.println("Please Enter the Vendor Name:");
         String vendor = myScanner.nextLine();
-        double amount = 0;
+        double amount ;
         do {
             System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
@@ -344,14 +342,11 @@ public class AutoLedgerApp {
     private static void displayLastYearTrans() {
         LocalDate today = LocalDate.now();
         int lastYear = today.getYear() - 1;
-        LocalDate january = today.withMonth(1).withDayOfMonth(1);
         printOutHeader();
         boolean found = false;
         for (Transaction t : transactionsList) {
             LocalDate transactionDate = t.getDate();
             if (transactionDate.getYear() == lastYear) {
-                LocalDate transDate = t.getDate();
-                LocalTime transTime = t.getTime();
                 formatedOutput(t);
                 found = true; // ✅ mark that we found something
 
