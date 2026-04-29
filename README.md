@@ -4,7 +4,7 @@
 
 I built this application as part of my transition into software development, with a focus on creating something practical and easy to use.
 
-Coming from a background in data center infrastructure and technical operations, I’ve always worked in environments where accuracy, organization, and efficiency matter. This project reflects that mindset—applied to software.
+Coming from a background in data center infrastructure and technical operations, I’ve always worked in environments where accuracy, organization, and efficiency matter. This project reflects that mindset applied to software.
 
 The idea behind it is simple: a dealership-style ledger that tracks revenue, expenses, and financial activity in a clear and structured way.
 
@@ -12,7 +12,7 @@ The idea behind it is simple: a dealership-style ledger that tracks revenue, exp
 
 ## What It Does
 
-This is a console-based Java application that allows you to:
+This is a console based Java application that allows you to:
 
 - Record sales (revenue) 💰 
 - Record expenses (inventory, repairs, fees) 💳 
@@ -27,14 +27,13 @@ All data is stored in a CSV file and loaded into memory for processing.
 ## Screenshots
 
 ### Main Menu
-![img_1.png](img_1.png)
+![img_1.png](src/main/resources/README%20Images/img_1.png)
 
 ### Ledger Menu
-![img_2.png](img_2.png)
-
+![img_2.png](src/main/resources/README%20Images/img_2.png)
+---
 ### Reports Menu
-<!-- Insert screenshot here -->
-Reports Menu
+![img_3.png](src/main/resources/README%20Images/img_3.png)
 
 ---
 
@@ -47,7 +46,7 @@ I focused on:
 - Making sure each menu had a clear purpose 
 - Avoiding unnecessary complexity while still delivering useful functionality 
 
-That balance—between usability and simplicity—was the most important part of the build.
+That balance between usability and simplicity was the most important part of the build.
 
 ---
 
