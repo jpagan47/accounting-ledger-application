@@ -27,7 +27,13 @@ public class AutoLedgerApp {
     public static void main(String[] args) {
         loadTransactions(FILE_PATH);
         mainMenu();
-        System.out.println("End of Application");
+        String exitPrompt = """
+                ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
+                END OF APPLICATION
+                ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄
+                """;
+
+        System.out.println(exitPrompt);
     }
 
     public static void loadTransactions(String fileName) {
@@ -60,14 +66,17 @@ public class AutoLedgerApp {
 
     public static void mainMenu() {
         String mainMenuPrompt = """
-            🏁............🏎💨..
-            ===== Main Menu =====
-            (D) Add Deposit
-            (P) Make Payment (Debit)
-            (L) Ledger
-            (X) Exit
-            🏎️. ݁₊ ⊹ . ݁˖ .
-            """;
+    \n
+    🏁 DEALERSHIP LEDGER SYSTEM 🏁
+    ⫘⫘⫘⫘⫘⫘ Main Menu ⫘⫘⫘⫘⫘⫘
+    [D] Add Deposit 💰
+    [P] Make Payment (Debit) 💳
+    [L] View Ledger 📊
+    [X] Exit 🏎️
+    
+    🏎️. ݁₊ ⊹ . ݁˖ .
+    Drive Sales. Track Profit. Win.
+    """;
         boolean running = true;
         do {
             System.out.println(mainMenuPrompt);
@@ -154,6 +163,8 @@ public class AutoLedgerApp {
         do {
             System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
+//            if (amount.contains ("$"))
+//                System.err.println("Only numbers do not include '?'");
             if (amount >= 0) {
                 System.err.println("The payment must be a negative value! Try again");
             }
@@ -166,6 +177,7 @@ public class AutoLedgerApp {
             bufferedWriter.close();
             loadTransactions(FILE_PATH);
         } catch (IOException e) {
+            System.err.println();
             throw new RuntimeException(e);
         }
     }
@@ -173,11 +185,11 @@ public class AutoLedgerApp {
     private static void ledgerMenu() {
         String ledgerMenuPrompt = """
             === Ledger Menu ===
-            (A) View All
-            (D) View Only Deposits
-            (P) View Only Payments
-            (R) Custom Report Search
-            (H) Back To Home Page
+            [A] View All 📊
+            [D] View Only Deposits 💰
+            [P] View Only Payments 💳
+            [R] Custom Report Search 🔎
+            [H] Back To Home Page 🏠
             """;
         boolean running = true;
         do {
@@ -210,7 +222,7 @@ public class AutoLedgerApp {
     private static void displayAllTransactions() {
 
         printOutHeader();
-
+        transactionsList.sort(Comparator.comparing(Transaction::getTime).reversed());
         transactionsList.sort(Comparator.comparing(Transaction::getDate).reversed());
         for (Transaction t : transactionsList) {
             formatedOutput(t);
@@ -244,12 +256,12 @@ public class AutoLedgerApp {
     private static void customReportSearch() {
         String customReportPrompt = """
             === Custom Report ===
-            (1) Month to Date
-            (2) Previous Month
-            (3) Year to Date
-            (4) Previous Year
-            (5) Search By Vendor
-            (0) Back to Ledger
+            [1] Month to Date 📅
+            [2] Previous Month ⏮️
+            [3] Year to Date 📆
+            [4] Previous Year ⏪
+            [5] Search By Vendor 🔍
+            [0] Back to Ledger ↩
             """;
         boolean running = true;
         do {
