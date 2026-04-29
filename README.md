@@ -1,6 +1,6 @@
 # Dealership Ledger System
 
-![Image.png](../../../Downloads/Image.png)
+<img  src="src/main/resources/README Images/Image.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/>
 
 ## About This Project
 
