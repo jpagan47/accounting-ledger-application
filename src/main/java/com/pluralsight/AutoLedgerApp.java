@@ -1,4 +1,5 @@
 package com.pluralsight;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,6 +22,7 @@ public class AutoLedgerApp {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM-dd-yyyy");
     public static LocalDate localDate;
     public static LocalTime localTime;
+
     //All my code that needs to run
     public static void main(String[] args) {
         loadTransactions(FILE_PATH);
@@ -33,13 +35,14 @@ public class AutoLedgerApp {
 
         System.out.println(exitPrompt);
     }
+
     //Made a method that takes the file path and splits it and adds it by index to my constructor
     public static void loadTransactions(String fileName) {
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             try {
-                String line ;
+                String line;
                 line = bufferedReader.readLine();
                 while (line != null) {
                     String[] parts = line.split("\\|");
@@ -61,20 +64,21 @@ public class AutoLedgerApp {
             throw new RuntimeException(e);
         }
     }
+
     //Printing out my Main Menu prompt encasing my switch in a do-while loop and setting my default
     public static void mainMenu() {
         String mainMenuPrompt = """
-    \n
-    🏁 DEALERSHIP LEDGER SYSTEM 🏁
-    ⫘⫘⫘⫘⫘⫘ Main Menu ⫘⫘⫘⫘⫘⫘
-    [D] Add Deposit 💰
-    [P] Make Payment (Debit) 💳
-    [L] View Ledger 📊
-    [X] Exit 🏎️
-    
-    🏎️. ݁₊ ⊹ . ݁˖ .
-    Drive Sales. Track Profit. Win.
-    """;
+                \n
+                🏁 DEALERSHIP LEDGER SYSTEM 🏁
+                ⫘⫘⫘⫘⫘⫘ Main Menu ⫘⫘⫘⫘⫘⫘
+                [D] Add Deposit 💰
+                [P] Make Payment (Debit) 💳
+                [L] View Ledger 📊
+                [X] Exit 🏎️
+                
+                🏎️. ݁₊ ⊹ . ݁˖ .
+                Drive Sales. Track Profit. Win.
+                """;
         boolean running = true;
         do {
             System.out.println(mainMenuPrompt);
@@ -100,6 +104,7 @@ public class AutoLedgerApp {
             }
         } while (running);
     }
+
     //My method takes the users input and writes it to the csv file , had to use Formatter to get my output to the console correct
     private static void addDeposit() {
         //Date Formatting
@@ -118,7 +123,7 @@ public class AutoLedgerApp {
 
         System.out.println("Please Enter the Vendor Name:");
         String vendor = myScanner.nextLine();
-        double amount ;
+        double amount;
         do {
             System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
@@ -137,6 +142,7 @@ public class AutoLedgerApp {
             throw new RuntimeException(e);
         }
     }
+
     //
     private static void makePayment() {
         //Date Formatting
@@ -155,7 +161,7 @@ public class AutoLedgerApp {
 
         System.out.println("Please Enter the Vendor Name:");
         String vendor = myScanner.nextLine();
-        double amount ;
+        double amount;
         do {
             System.out.println("Please Enter the Amount of the Payment: ");
             amount = Double.parseDouble(myScanner.nextLine());
@@ -180,13 +186,13 @@ public class AutoLedgerApp {
 
     private static void ledgerMenu() {
         String ledgerMenuPrompt = """
-            === Ledger Menu ===
-            [A] View All 📊
-            [D] View Only Deposits 💰
-            [P] View Only Payments 💳
-            [R] Custom Report Search 🔎
-            [H] Back To Home Page 🏠
-            """;
+                === Ledger Menu ===
+                [A] View All 📊
+                [D] View Only Deposits 💰
+                [P] View Only Payments 💳
+                [R] Custom Report Search 🔎
+                [H] Back To Home Page 🏠
+                """;
         boolean running = true;
         do {
             System.out.println(ledgerMenuPrompt);
@@ -223,7 +229,7 @@ public class AutoLedgerApp {
         for (Transaction t : transactionsList) {
             displayFormattedOutput(t);
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
     private static void displayAllDeposits() {
@@ -235,7 +241,7 @@ public class AutoLedgerApp {
 
             }
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
     private static void displayAllPayments() {
@@ -246,19 +252,19 @@ public class AutoLedgerApp {
                 displayFormattedOutput(t);
             }
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
     private static void customReportSearch() {
         String customReportPrompt = """
-            === Custom Report ===
-            [1] Month to Date 📅
-            [2] Previous Month ⏮️
-            [3] Year to Date 📆
-            [4] Previous Year ⏪
-            [5] Search By Vendor 🔍
-            [0] Back to Ledger ↩
-            """;
+                === Custom Report ===
+                [1] Month to Date 📅
+                [2] Previous Month ⏮️
+                [3] Year to Date 📆
+                [4] Previous Year ⏪
+                [5] Search By Vendor 🔍
+                [0] Back to Ledger ↩
+                """;
         boolean running = true;
         do {
             System.out.println(customReportPrompt);
@@ -303,7 +309,7 @@ public class AutoLedgerApp {
         if (!found) {
             System.out.println("There is no Transactions this month");
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
 
@@ -322,21 +328,9 @@ public class AutoLedgerApp {
         if (!found) {
             System.out.println("There is no Transactions this month");
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
-//    public static ArrayList<Transaction> customFilters() {
-//
-//        ArrayList<Transaction> results = filterStartDate(transactionsList);
-//        results = filterEndDate(results);
-//        results = filterByDescription(results);
-//
-//        return results;
-//    }
-
-//    private static ArrayList<Transaction> filterStartDate(ArrayList<Transaction> transactions) {
-//        return transactions;
-//    }
 
     private static void displayCurrentYearTransactions() {
         LocalDate today = LocalDate.now();
@@ -358,7 +352,7 @@ public class AutoLedgerApp {
         if (!found) {
             System.out.println("There is no Transactions this year");
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
     private static void displayLastYearTransactions() {
@@ -377,17 +371,18 @@ public class AutoLedgerApp {
         if (!found) {
             System.out.println("There is no Transactions this year");
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
 
     /**
      * Display footer after show transactions on screen
      */
-    private static void displayEndOfTransactions() {
+    private static void displayfooter() {
         System.out.println("\n");
         System.out.println("====== End of Transactions ======");
         System.out.println("\n");
     }
+
     //Asking user to input the vendor name then looping my list to find out my list .contains(userInput)
     private static void searchingByVendor() {
         System.out.println("Please Enter Vendor Name :");
@@ -403,13 +398,81 @@ public class AutoLedgerApp {
         if (!found) {
             System.err.println("That Vendor is not on the Ledger");
         }
-        displayEndOfTransactions();
+        displayfooter();
     }
+//    public static ArrayList<Transaction> customFilters() {
+//
+//        System.out.println("Enter Start Date (MM-dd-yyyy) or press Enter to skip:");
+//        String startInput = myScanner.nextLine();
+//
+//        System.out.println("Enter End Date (MM-dd-yyyy) or press Enter to skip:");
+//        String endInput = myScanner.nextLine();
+//
+//        System.out.println("Enter Description or press Enter to skip:");
+//        String descriptionInput = myScanner.nextLine();
+//
+//        System.out.println("Enter Vendor or press Enter to skip:");
+//        String vendorInput = myScanner.nextLine();
+//
+//        System.out.println("Enter Amount or press Enter to skip:");
+//        String amountInput = myScanner.nextLine();
+//
+//        LocalDate startDate ;
+//        LocalDate endDate;
+//        Double amount ;
+//
+//        if (startInput.isBlank()) {
+//            startDate = LocalDate.parse(startInput, DATE_FORMATTER);
+//        }
+//        if (endInput.isBlank()) {
+//            endDate = LocalDate.parse(endInput, DATE_FORMATTER);
+//        }
+//        if (amountInput.isBlank()) {
+//            amount = Double.parseDouble(amountInput);
+//        }
+//
+//        ArrayList<Transaction> results = new ArrayList<>();
+//
+//        for (Transaction t : transactionsList) {
+//
+//            boolean matches = true;
+//
+//            if (startDate = null && t.getDate().isBefore(startDate)) {
+//                matches = false;
+//            }
+//
+//            if (endDate = null && t.getDate().isAfter(endDate)) {
+//                matches = false;
+//            }
+//
+//            if (descriptionInput.isBlank() &&
+//                    t.getDescription().toLowerCase().contains(descriptionInput.toLowerCase())) {
+//                matches = false;
+//            }
+//
+//            if (vendorInput.isBlank() &&
+//                    t.getVendor().toLowerCase().contains(vendorInput.toLowerCase())) {
+//                matches = false;
+//            }
+//
+//            if (amount = null && t.getAmount() != amount) {
+//                matches = false;
+//            }
+//
+//            if (matches) {
+//                results.add(t);
+//            }
+//        }
+//
+//        return results;
+//    }
+
     // Decided to make a header method to call it on all my transaction print-outs
     private static void displayHeader() {
         System.out.printf("%-10s %-10s %-28s %-22s %s %n", "Date", "Time", " Description", "Vendor", "Amount");
         System.out.println("=================================================================================");
     }
+
     // Formatting my output into proper lines and columns
     private static void displayFormattedOutput(Transaction t) {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
